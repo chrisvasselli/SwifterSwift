@@ -81,12 +81,12 @@ public extension UIAlertController {
     /// - Parameters:
     ///   - title: alert controller's title.
     ///   - message: alert controller's message (default is nil).
-    ///   - defaultActionButtonTitle: default action button title (default is "OK").
+    ///   - defaultActionButtonTitle: default action button title.
     ///   - tintColor: alert controller's tint color (default is nil).
     convenience init(
         title: String,
         message: String? = nil,
-        defaultActionButtonTitle: String = "OK",
+        defaultActionButtonTitle: String,
         tintColor: UIColor? = nil) {
         self.init(title: title, message: message, preferredStyle: .alert)
         let defaultAction = UIAlertAction(title: defaultActionButtonTitle, style: .default, handler: nil)
@@ -99,15 +99,15 @@ public extension UIAlertController {
     /// SwifterSwift: Create new error alert view controller from Error with default OK action.
     ///
     /// - Parameters:
-    ///   - title: alert controller's title (default is "Error").
+    ///   - title: alert controller's title.
     ///   - error: error to set alert controller's message to it's localizedDescription.
-    ///   - defaultActionButtonTitle: default action button title (default is "OK").
+    ///   - defaultActionButtonTitle: default action button title.
     ///   - preferredStyle: type of alert to display (default is .alert).
     ///   - tintColor: alert controller's tint color (default is nil).
     convenience init(
-        title: String = "Error",
+        title: String,
         error: Error,
-        defaultActionButtonTitle: String = "OK",
+        defaultActionButtonTitle: String,
         preferredStyle: UIAlertController.Style = .alert,
         tintColor: UIColor? = nil) {
         self.init(title: title, message: error.localizedDescription, preferredStyle: preferredStyle)
