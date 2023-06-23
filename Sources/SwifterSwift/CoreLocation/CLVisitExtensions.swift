@@ -1,6 +1,6 @@
 // CLVisitExtensions.swift - Copyright 2020 SwifterSwift
 
-#if canImport(CoreLocation) && (os(iOS) || targetEnvironment(macCatalyst))
+#if canImport(CoreLocation) && (os(iOS) || targetEnvironment(macCatalyst)) && !os(xrOS)
 import CoreLocation
 
 // MARK: - Properties
