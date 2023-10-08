@@ -25,9 +25,7 @@ public extension UITabBar {
         tintColor = selectedItem ?? tintColor
         // shadowImage = UIImage()
         backgroundImage = UIImage()
-#if !os(xrOS)
         isTranslucent = false
-#endif
 
         // selectedBackgoundColor
         guard let barItems = items else {

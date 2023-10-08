@@ -180,7 +180,7 @@ public extension UITextField {
     #if os(iOS)
     @discardableResult
     func addToolbar(items: [UIBarButtonItem]?, height: CGFloat = 44) -> UIToolbar {
-        let toolBar = UIToolbar(frame: CGRect(x: 0.0, y: 0.0, width: window?.bounds.size.width ?? 0, height: height))
+        let toolBar = UIToolbar(frame: CGRect(x: 0.0, y: 0.0, width: UIScreen.main.bounds.size.width, height: height))
         toolBar.setItems(items, animated: false)
         inputAccessoryView = toolBar
         return toolBar
