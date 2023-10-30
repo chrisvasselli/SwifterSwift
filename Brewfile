@@ -1,2 +1,2 @@
 brew "swiftformat"
-brew "xctool"
+brew "ruby"

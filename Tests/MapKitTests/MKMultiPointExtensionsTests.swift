@@ -1,4 +1,4 @@
-// MKMultiPointTests.swift - Copyright 2022 SwifterSwift
+// MKMultiPointExtensionsTests.swift - Copyright 2023 SwifterSwift
 
 @testable import SwifterSwift
 import XCTest
@@ -8,8 +8,7 @@ import MapKit
 
 import struct CoreLocation.CLLocationCoordinate2D
 
-@available(tvOS 9.2, *)
-final class MKMultiPointTests: XCTestCase {
+final class MKMultiPointExtensionsTests: XCTestCase {
     let coordinates = [
         (37.330514, -121.888863),
         (37.330832, -121.888337),
@@ -30,11 +29,11 @@ final class MKMultiPointTests: XCTestCase {
     }
 
     func testCoordinatesForPolygon() {
-        let ploygon = MKPolygon(coordinates: coordinates, count: coordinates.count)
+        let polygon = MKPolygon(coordinates: coordinates, count: coordinates.count)
 
-        XCTAssertEqual(coordinates.count, ploygon.coordinates.count)
+        XCTAssertEqual(coordinates.count, polygon.coordinates.count)
 
-        for (coordinate1, coordinate2) in zip(coordinates, ploygon.coordinates) {
+        for (coordinate1, coordinate2) in zip(coordinates, polygon.coordinates) {
             XCTAssertEqual(coordinate1.latitude, coordinate2.latitude, accuracy: 0.000000001)
             XCTAssertEqual(coordinate1.longitude, coordinate2.longitude, accuracy: 0.000000001)
         }

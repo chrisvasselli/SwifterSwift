@@ -1,4 +1,4 @@
-// StringExtensionsTests.swift - Copyright 2020 SwifterSwift
+// StringExtensionsTests.swift - Copyright 2023 SwifterSwift
 
 @testable import SwifterSwift
 import XCTest
@@ -223,7 +223,15 @@ final class StringExtensionsTests: XCTestCase {
     }
 
     func testUrl() {
+        #if os(Linux)
         XCTAssertNil("hello world".url)
+        #else
+        if #available(iOS 17.0, *) {
+            XCTAssertEqual("hello world".url, URL(string: "hello%20world"))
+        } else {
+            XCTAssertNil("hello world".url)
+        }
+        #endif
 
         let google = "https://www.google.com"
         XCTAssertEqual(google.url, URL(string: google))
@@ -312,6 +320,11 @@ final class StringExtensionsTests: XCTestCase {
         XCTAssertEqual(helloWorld.localized(comment: "comment"), NSLocalizedString(helloWorld, comment: "comment"))
     }
 
+    func testFormatLocalized() {
+        XCTAssertEqual("%d Swift %d Objective-C".formatLocalized(1, 2), "1 Swift 2 Objective-C")
+        XCTAssertEqual("%d Swift %d Objective-C".formatLocalized(comment: "comment", 1, 2), "1 Swift 2 Objective-C")
+    }
+
     func testMostCommonCharacter() {
         let mostCommonCharacter = "This is a test, since e is appearing every where e should be the common character"
             .mostCommonCharacter
@@ -337,6 +350,7 @@ final class StringExtensionsTests: XCTestCase {
         XCTAssertEqual("Swift is amazing".toSlug(), "swift-is-amazing")
     }
 
+    // swiftlint:disable:next function_body_length
     func testSubscript() {
         let str = "Hello world!"
         XCTAssertEqual(str[safe: 1], "e")
@@ -359,6 +373,24 @@ final class StringExtensionsTests: XCTestCase {
         XCTAssertNil(str[safe: 10...18])
         XCTAssertEqual(str[safe: 11...11], "!")
         XCTAssertNil(str[safe: 11...12])
+
+        XCTAssertNil(str[safe: ...(-1)])
+        XCTAssertEqual(str[safe: ...0], "H")
+        XCTAssertEqual(str[safe: ...4], "Hello")
+        XCTAssertEqual(str[safe: ...11], "Hello world!")
+        XCTAssertNil(str[safe: ...12])
+
+        XCTAssertNil(str[safe: ..<(-1)])
+        XCTAssertEqual(str[safe: ..<0], "")
+        XCTAssertEqual(str[safe: ..<5], "Hello")
+        XCTAssertEqual(str[safe: ..<12], "Hello world!")
+        XCTAssertNil(str[safe: ..<13])
+
+        XCTAssertNil(str[safe: (-1)...])
+        XCTAssertEqual(str[safe: 0...], "Hello world!")
+        XCTAssertEqual(str[safe: 6...], "world!")
+        XCTAssertEqual(str[safe: 11...], "!")
+        XCTAssertNil(str[safe: 12...])
 
         let oneCharStr = "a"
         XCTAssertEqual(oneCharStr[safe: 0..<0], "")
@@ -391,8 +423,9 @@ final class StringExtensionsTests: XCTestCase {
         let str = "Hello world!"
         #if os(iOS)
         str.copyToPasteboard()
-        let strFromPasteboard = UIPasteboard.general.string
-        XCTAssertEqual(strFromPasteboard, str)
+        // Fail because new os requires user accept paste.
+        // let strFromPasteboard = UIPasteboard.general.string
+        // XCTAssertEqual(strFromPasteboard, str)
 
         #elseif os(macOS)
         str.copyToPasteboard()
@@ -578,33 +611,44 @@ final class StringExtensionsTests: XCTestCase {
     }
 
     func testRegexMatches() throws {
-        XCTAssertTrue("123".matches(regex: try NSRegularExpression(pattern: "\\d{3}")))
-        XCTAssertFalse("dasda".matches(regex: try NSRegularExpression(pattern: "\\d{3}")))
-        XCTAssertFalse("notanemail.com".matches(regex: try NSRegularExpression(pattern: emailPattern)))
-        XCTAssertTrue("email@mail.com".matches(regex: try NSRegularExpression(pattern: emailPattern)))
+        XCTAssertTrue(try "123".matches(regex: NSRegularExpression(pattern: "\\d{3}")))
+        XCTAssertFalse(try "dasda".matches(regex: NSRegularExpression(pattern: "\\d{3}")))
+        XCTAssertFalse(try "notanemail.com".matches(regex: NSRegularExpression(pattern: emailPattern)))
+        XCTAssertTrue(try "email@mail.com".matches(regex: NSRegularExpression(pattern: emailPattern)))
     }
 
     #if canImport(Foundation)
     func testPatternMatchOperator() {
-        XCTAssert("123" ~= "\\d{3}")
-        XCTAssertFalse("dasda" ~= "\\d{3}")
-        XCTAssertFalse("notanemail.com" ~= emailPattern)
-        XCTAssert("email@mail.com" ~= emailPattern)
-        XCTAssert("hat" ~= "[a-z]at")
-        XCTAssertFalse("" ~= "[a-z]at")
-        XCTAssert("" ~= "[a-z]*")
-        XCTAssertFalse("" ~= "[0-9]+")
+        XCTAssert("\\d{3}" ~= "123")
+        XCTAssertFalse("\\d{3}" ~= "dasda")
+        XCTAssertFalse(emailPattern ~= "notanemail.com")
+        XCTAssert(emailPattern ~= "email@mail.com")
+        XCTAssert("[a-z]at" ~= "hat")
+        XCTAssertFalse("[a-z]at" ~= "")
+        XCTAssert("[a-z]*" ~= "")
+        XCTAssertFalse("[0-9]+" ~= "")
+
+        // https://github.com/SwifterSwift/SwifterSwift/issues/1109
+        let codeString = "0"
+        switch codeString {
+        case "101":
+            XCTAssert(codeString == "101")
+        case "0":
+            XCTAssert(codeString == "0")
+        default:
+            XCTFail("Switch string value, not matching the correct result.")
+        }
     }
     #endif
 
     func testRegexMatchOperator() throws {
         let regex = try NSRegularExpression(pattern: "\\d{3}")
-        XCTAssert("123" ~= regex)
-        XCTAssertFalse("abc" ~= regex)
+        XCTAssert(regex ~= "123")
+        XCTAssertFalse(regex ~= "abc")
     }
 
     func testPadStart() {
-        var str: String = "str"
+        var str = "str"
         str.padStart(10)
         XCTAssertEqual(str, "       str")
 
@@ -639,7 +683,7 @@ final class StringExtensionsTests: XCTestCase {
     }
 
     func testPadEnd() {
-        var str: String = "str"
+        var str = "str"
         str.padEnd(10)
         XCTAssertEqual(str, "str       ")
 
@@ -703,18 +747,6 @@ final class StringExtensionsTests: XCTestCase {
         XCTAssertNotNil(String(base64: "SGVsbG8gV29ybGQh"))
         XCTAssertEqual(String(base64: "SGVsbG8gV29ybGQh"), "Hello World!")
         XCTAssertNil(String(base64: "hello"))
-    }
-
-    func testInitRandomOfLength() {
-        let str1 = String(randomOfLength: 10)
-        XCTAssertEqual(str1.count, 10)
-
-        let str2 = String(randomOfLength: 10)
-        XCTAssertEqual(str2.count, 10)
-
-        XCTAssertNotEqual(str1, str2)
-
-        XCTAssertEqual(String(randomOfLength: 0), "")
     }
 
     func testBold() {
@@ -799,7 +831,7 @@ final class StringExtensionsTests: XCTestCase {
             in: NSRange(location: 0, length: coloredString.length))
         XCTAssertNotNil(attrs[NSAttributedString.Key.foregroundColor])
 
-        guard let color = attrs[.foregroundColor] as? Color else {
+        guard let color = attrs[.foregroundColor] as? SFColor else {
             XCTFail("Unable to find color in testColored")
             return
         }
@@ -906,7 +938,6 @@ final class StringExtensionsTests: XCTestCase {
         XCTAssertEqual(num.spelledOutString(locale: Locale(identifier: "en_US")), "twelve point three two")
     }
 
-    @available(macOS 10.11, *)
     func testIntOrdinal() {
         let num = 12
         XCTAssertNotNil(num.ordinalString())

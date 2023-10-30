@@ -58,6 +58,88 @@ The changelog for **SwifterSwift**. Also see the [releases](https://github.com/S
 - **String**
   - Fixed `subscript(safe:)` to correctly check for valid ranges of different types. [#1114](https://github.com/SwifterSwift/SwifterSwift/issues/1114) by [guykogus](https://github.com/guykogus)
 
+## [v6.0.0](https://github.com/SwifterSwift/SwifterSwift/releases/tag/6.0.0)
+### Breaking Change
+- **Minimum deployment target**
+  - Bumped up the minimum deployment targets to match the minimums of Xcode 15. [#1142](https://github.com/SwifterSwift/SwifterSwift/issues/1142) by [guykogus](https://github.com/guykogus)
+    - iOS 12.0
+    - macOS 10.13
+    - tvOS 12.0
+    - watchOS 4.0
+- **Color**
+  - Renamed typealias `Color` typealias to `SFColor` to fix namespace conflicts with swiftUI's `Color` Type. [#1055](https://github.com/SwifterSwift/SwifterSwift/pull/1055) by [MussaCharles](https://github.com/MussaCharles)
+- **EdgeInsets**
+  - Renamed `EdgeInsets` typealias to `SFEdgeInsets` to fix namespace conflicts with swiftUI's `EdgeInsets` Type. [#1055](https://github.com/SwifterSwift/SwifterSwift/pull/1055) by [MussaCharles](https://github.com/MussaCharles)
+- **Font**
+  - Renamed `Font` typealias to `SFFont` to fix namespace conflicts with swiftUI's `Font` Type. [#1055](https://github.com/SwifterSwift/SwifterSwift/pull/1055) by [MussaCharles](https://github.com/MussaCharles)
+- **String**
+  - Reversed the parameters for the `~=` operator in order to not break the default implementation, which causes issues in `switch` statements, for example. [#1113](https://github.com/SwifterSwift/SwifterSwift/issues/1113) by [guykogus](https://github.com/guykogus)
+
+### Removed
+[#1145](https://github.com/SwifterSwift/SwifterSwift/issues/1145) by [guykogus](https://github.com/guykogus)
+- **Array**:
+  - `sorted(by:ascending:)`, `sort(by:ascending:)`
+- **Sequence**:
+  - `map(by:)`, `compactMap(by:)`, `filter(by:)`, `last(where:)`
+- **String**
+  - `init(randomOfLength:)`
+- **UIDatePicker**
+  - `textColor`
+
+### Deprecated
+- **String**
+  - `init(randomOfLength:)` deprecated in favor of `String.random(ofLength:)`. [#1115](https://github.com/SwifterSwift/SwifterSwift/issues/1115) by [guykogus](https://github.com/guykogus)
+- **UIDatePicker**
+  - `textColor` deprecated as the implementation hacked a keypath that is no longer available. [#1136](https://github.com/SwifterSwift/SwifterSwift/issues/1136) by [guykogus](https://github.com/guykogus)
+
+### Added
+- **Future**
+  - Added `init(asyncFunc:)` to create a `Future` from an `async` value. [#1139](https://github.com/SwifterSwift/SwifterSwift/pull/1139) by [RomanPodymov](https://github.com/RomanPodymov)
+- **UINavigationController**
+  - Added `pushViewController(_:hidesBottomBar:animated:)` for hiding the bottom bar when pushing any `UIViewController`. [#1117](https://github.com/SwifterSwift/SwifterSwift/issues/1117) by [imdkhairul](https://github.com/imdkhairul)
+- **UIButton**
+  - Added `setBackgroundColor(_:for:)` method for setting background color for the specified UI state. [#1041](https://github.com/SwifterSwift/SwifterSwift/pull/1041) by [TwizzyIndy](https://github.com/TwizzyIndy)
+  - Added `imageForFocused`, `titleColorForFocused`, `titleForFocused`, `attributedTitleForFocused` to handle focused state. [#1063](https://github.com/SwifterSwift/SwifterSwift/pull/1063) by [Roman Podymov](https://github.com/RomanPodymov)
+- **Array**
+  - Added `init(count:element:)` initializer for creating an array of a given size with a closure. [#1051](https://github.com/SwifterSwift/SwifterSwift/pull/1051) by [viktart](https://github.com/viktart)
+- **DefaultStringInterpolation**
+  - Added `appendInterpolation(_:placeholder:predicate:)` method for providing placeholder string if interpolated value is `nil` or the optional predicate closure returns `false`. [#1074](https://github.com/SwifterSwift/SwifterSwift/pull/1074) by [Shiva Huang](https://github.com/ShivaHuang)
+- **SFEdgeInsets** 
+  - Excluded type alias `SFEdgeInsets` when targeting visionOS platform. [#1126](https://github.com/SwifterSwift/SwifterSwift/pull/1126) by [MarcoEidinger](https://github.com/MarcoEidinger)
+- **String**
+  - Added `formatLocalized(comment:arguments:)` method to format localized strings easily. [#1100](https://github.com/SwifterSwift/SwifterSwift/pull/1100) by [makcakir](https://github.com/makcakir)
+- **UIAlertController**
+  - Excluded `show(animated:vibrate:completion:)` when targeting visionOS platform. [#1126](https://github.com/SwifterSwift/SwifterSwift/pull/1126) by [MarcoEidinger](https://github.com/MarcoEidinger)
+- **UITabBar**
+  - Fixed compilation error for `setColors(background:selectedBackground:item:selectedItem:)` when targeting visionOS platform. [#1126](https://github.com/SwifterSwift/SwifterSwift/pull/1126) by [MarcoEidinger](https://github.com/MarcoEidinger)
+- **URL**
+  - Added `allQueryParameters`, `appendingQueryParameters(_:)` and `appendQueryParameters(_:)` for using `URLQueryItem`, as an addition to the `[String: String]` variants, to handle `nil`-value query parameters. [#1116](https://github.com/SwifterSwift/SwifterSwift/issues/1116) by [guykogus](https://github.com/guykogus)
+- **URLRequest**
+  - Added `method()` to duplicate the request and modify the HTTP method (verb) for the request (i.e.: GET, POST, PUT) [#1133](https://github.com/SwifterSwift/SwifterSwift/pull/1133) by [Ricardo Rauber](https://github.com/ricardorauber)
+  - Added `header(name:, value:)` to duplicate the request and set a header with key and value. [#1134](https://github.com/SwifterSwift/SwifterSwift/pull/1134) by [Ricardo Rauber](https://github.com/ricardorauber)
+- **URLSession**
+  - Added `dataSync(for:)` to make requests synchronously. [#1076](https://github.com/SwifterSwift/SwifterSwift/pull/1076) by [Roman Podymov](https://github.com/RomanPodymov)
+- **UIStackView**
+  - Added `backgroundViewColor` to add background color. [#1127](https://github.com/SwifterSwift/SwifterSwift/pull/1127) by [WZBbiao](https://github.com/WZBbiao)
+
+### Changed
+- **UIButton**:
+  - Add `.focused` to `UIButton.states`. [#1062](https://github.com/SwifterSwift/SwifterSwift/pull/1062) by [Roman Podymov](https://github.com/RomanPodymov).
+
+### Fixed
+- **Date**
+  - Fixed incorrect calculation in `nearestTenMinutes` to align with other `nearest*` date calculations. [#1034](https://github.com/SwifterSwift/SwifterSwift/pull/1034) by [mmdock](https://github.com/mmdock)
+- **Digest**
+  - `DigestExtensions.swift` would not compile on Xcode 14 due to an `ambiguous use of 'makeIterator()'` error. [#1042](https://github.com/SwifterSwift/SwifterSwift/issues/1042) by [theedov](https://github.com/theedov)
+- **HKActivitySummary**
+  - Add `@available(macOS 13.0)` to fix compilation on macOS. [#1059](https://github.com/SwifterSwift/SwifterSwift/issues/1059) by [guykogus](https://github.com/guykogus)
+- **NotificationCenter**
+  - Fixed warning in `observeOnce` that about capture in sendable closure.
+- **UINavigationBar**
+  - Change `setTitleFont(_:color:)` and `setColors(background:text:)` to support iOS 15+. [#1105](https://github.com/SwifterSwift/SwifterSwift/pull/1105) by [TTOzzi](https://github.com/TTOzzi)
+- **String**
+  - Fixed `subscript(safe:)` to correctly check for valid ranges of different types. [#1114](https://github.com/SwifterSwift/SwifterSwift/issues/1114) by [guykogus](https://github.com/guykogus)
+
 ## [v5.3.0](https://github.com/SwifterSwift/SwifterSwift/releases/tag/5.3.0)
 ### Breaking Change
 - **Sequence**
@@ -203,6 +285,7 @@ The changelog for **SwifterSwift**. Also see the [releases](https://github.com/S
   - Conform to `Equatable` when `Wrapped` is `RawRepresentable` and its `RawValue` is `Equatable`. [#804](https://github.com/SwifterSwift/SwifterSwift/pull/804) by [guykogus](https://github.com/guykogus)
 - **CoreLocation**:
   - Added `Array where Element: CLLocation extension` and added `distance(unitLength:)` function. [#799](https://github.com/SwifterSwift/SwifterSwift/pull/799) by [trevorphillips](https://github.com/trevorphillips)
+  - Added `isInRange(of:radius:unit:)` to check if a location is within the radius of another location. [#1095](https://github.com/SwifterSwift/SwifterSwift/pull/1095) by [never-better](https://github.com/never-better)
 - **Decodable**:
   - Added `init?(data:decoder:)` to decode `Decodable` (Codable) type models. [#797](https://github.com/SwifterSwift/SwifterSwift/pull/797) by [Mustafa GUNES](https://github.com/mustafagunes).
 - **CLVisit**:
@@ -358,7 +441,7 @@ The changelog for **SwifterSwift**. Also see the [releases](https://github.com/S
 ### Deprecated
 
 - **Array**:
-  - Deprecated `sorted(by:, ascending)` and `sort(by:ascending)` in favor of `sorted(by:with:)` and `sort(by:with:)` [#712](https://github.com/SwifterSwift/SwifterSwift/pull/712) by [LucianoPAlmeida](https://github.com/LucianoPAlmeida)
+  - Deprecated `sorted(by:ascending:)` and `sort(by:ascending:)` in favor of `sorted(by:with:)` and `sort(by:with:)` [#712](https://github.com/SwifterSwift/SwifterSwift/pull/712) by [LucianoPAlmeida](https://github.com/LucianoPAlmeida)
 
 ### Removed
 

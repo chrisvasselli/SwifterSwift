@@ -1,4 +1,4 @@
-// WKWebViewExtensionsTests.swift - Copyright 2020 SwifterSwift
+// WKWebViewExtensionsTests.swift - Copyright 2023 SwifterSwift
 
 @testable import SwifterSwift
 import XCTest
@@ -18,7 +18,7 @@ final class WKWebViewExtensionsTests: XCTestCase {
     func testLoadURL() {
         let successExpectation = WebViewSuccessExpectation(description: "Correct URL", webView: webView)
 
-        let url = URL(string: "https://example.com/")!
+        let url = URL(string: "https://www.apple.com/")!
         let navigation = webView.loadURL(url)
 
         XCTAssertNotNil(navigation)
@@ -29,7 +29,7 @@ final class WKWebViewExtensionsTests: XCTestCase {
     func testLoadURLString() {
         let successExpectation = WebViewSuccessExpectation(description: "Correct URL string", webView: webView)
 
-        let urlString = "https://example.com/"
+        let urlString = "https://www.apple.com/"
         let navigation = webView.loadURLString(urlString)
 
         XCTAssertNotNil(navigation)
@@ -38,16 +38,18 @@ final class WKWebViewExtensionsTests: XCTestCase {
     }
 
     func testLoadInvalidURLString() {
-        let invalidURLString = "invalid url"
-        let navigation = webView.loadURLString(invalidURLString)
+        if #unavailable(iOS 17.0) {
+            let invalidURLString = "invalid url"
+            let navigation = webView.loadURLString(invalidURLString)
 
-        XCTAssertNil(navigation)
+            XCTAssertNil(navigation)
+        }
     }
 
     func testLoadDeadURLString() {
         let failureExpectation = WebViewFailureExpectation(description: "Dead URL string", webView: webView)
 
-        let deadURLString = "https://deadurl.com"
+        let deadURLString = "https://dead-url-573489574389.com"
         let navigation = webView.loadURLString(deadURLString, timeout: 5.0)
 
         XCTAssertNotNil(navigation)

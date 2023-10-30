@@ -1,4 +1,4 @@
-// NSAttributedStringExtensions.swift - Copyright 2020 SwifterSwift
+// NSAttributedStringExtensions.swift - Copyright 2023 SwifterSwift
 
 #if canImport(Foundation)
 import Foundation
@@ -20,16 +20,16 @@ public extension NSAttributedString {
         guard !string.isEmpty else { return self }
 
         let pointSize: CGFloat
-        if let font = attribute(.font, at: 0, effectiveRange: nil) as? Font {
+        if let font = attribute(.font, at: 0, effectiveRange: nil) as? SFFont {
             pointSize = font.pointSize
         } else {
             #if os(tvOS) || os(watchOS)
-            pointSize = Font.preferredFont(forTextStyle: .headline).pointSize
+            pointSize = SFFont.preferredFont(forTextStyle: .headline).pointSize
             #else
-            pointSize = Font.systemFontSize
+            pointSize = SFFont.systemFontSize
             #endif
         }
-        return applying(attributes: [.font: Font.boldSystemFont(ofSize: pointSize)])
+        return applying(attributes: [.font: SFFont.boldSystemFont(ofSize: pointSize)])
     }
     #endif
 
@@ -93,7 +93,7 @@ public extension NSAttributedString {
     ///
     /// - Parameter color: text color.
     /// - Returns: a NSAttributedString colored with given color.
-    func colored(with color: Color) -> NSAttributedString {
+    func colored(with color: SFColor) -> NSAttributedString {
         return applying(attributes: [.foregroundColor: color])
     }
     #endif
@@ -103,7 +103,8 @@ public extension NSAttributedString {
     /// - Parameters:
     ///   - attributes: Dictionary of attributes.
     ///   - pattern: a regular expression to target.
-    ///   - options: The regular expression options that are applied to the expression during matching. See NSRegularExpression.Options for possible values.
+    ///   - options: The regular expression options that are applied to the expression during matching. See
+    /// NSRegularExpression.Options for possible values.
     /// - Returns: An NSAttributedString with attributes applied to substrings matching the pattern.
     func applying(attributes: [Key: Any],
                   toRangesMatching pattern: String,
@@ -148,7 +149,8 @@ public extension NSAttributedString {
         lhs = string
     }
 
-    /// SwifterSwift: Add a NSAttributedString to another NSAttributedString and return a new NSAttributedString instance.
+    /// SwifterSwift: Add a NSAttributedString to another NSAttributedString and return a new NSAttributedString
+    /// instance.
     ///
     /// - Parameters:
     ///   - lhs: NSAttributedString to add.
@@ -169,7 +171,8 @@ public extension NSAttributedString {
         lhs += NSAttributedString(string: rhs)
     }
 
-    /// SwifterSwift: Add a NSAttributedString to another NSAttributedString and return a new NSAttributedString instance.
+    /// SwifterSwift: Add a NSAttributedString to another NSAttributedString and return a new NSAttributedString
+    /// instance.
     ///
     /// - Parameters:
     ///   - lhs: NSAttributedString to add.
@@ -181,11 +184,13 @@ public extension NSAttributedString {
 }
 
 public extension Array where Element: NSAttributedString {
-    /// SwifterSwift: Returns a new `NSAttributedString` by concatenating the elements of the sequence, adding the given separator between each element.
+    /// SwifterSwift: Returns a new `NSAttributedString` by concatenating the elements of the sequence, adding the given
+    /// separator between each element.
+    ///
+    /// [Is there joinWithSeparator for attributed strings](https://stackoverflow.com/q/32830519/1627511)
     ///
     /// - Parameter separator: An `NSAttributedString` to add between the elements of the sequence.
     /// - Returns: NSAttributedString with applied attributes.
-    // https://stackoverflow.com/questions/32830519/is-there-joinwithseparator-for-attributed-strings
     func joined(separator: NSAttributedString) -> NSAttributedString {
         guard let firstElement = first else { return NSMutableAttributedString(string: "") }
         return dropFirst().reduce(into: NSMutableAttributedString(attributedString: firstElement)) { result, element in

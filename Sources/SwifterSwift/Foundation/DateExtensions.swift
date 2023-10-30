@@ -1,4 +1,4 @@
-// DateExtensions.swift - Copyright 2022 SwifterSwift
+// DateExtensions.swift - Copyright 2023 SwifterSwift
 
 #if canImport(Foundation)
 import Foundation
@@ -157,10 +157,12 @@ public extension Date {
 
     /// SwifterSwift: Weekday.
     ///
-    /// 	Date().weekday -> 5 // fifth day in the current week.
+    /// The weekday units are the numbers 1 through N (where for the Gregorian calendar N=7 and 1 is Sunday).
+    ///
+    /// 	Date().weekday -> 5 // fifth day in the current week, e.g. Thursday in the Gregorian calendar
     ///
     var weekday: Int {
-        return calendar.component(.weekday, from: self)
+        calendar.component(.weekday, from: self)
     }
 
     /// SwifterSwift: Hour.
@@ -245,7 +247,8 @@ public extension Date {
         }
         set {
             #if targetEnvironment(macCatalyst)
-            // The `Calendar` implementation in `macCatalyst` does not know that a nanosecond is 1/1,000,000,000th of a second
+            // The `Calendar` implementation in `macCatalyst` does not know that a nanosecond is 1/1,000,000,000th of a
+            // second
             let allowedRange = 0..<1_000_000_000
             #else
             let allowedRange = calendar.range(of: .nanosecond, in: .second, for: self)!
@@ -275,7 +278,8 @@ public extension Date {
         set {
             let nanoSeconds = newValue * 1_000_000
             #if targetEnvironment(macCatalyst)
-            // The `Calendar` implementation in `macCatalyst` does not know that a nanosecond is 1/1,000,000,000th of a second
+            // The `Calendar` implementation in `macCatalyst` does not know that a nanosecond is 1/1,000,000,000th of a
+            // second
             let allowedRange = 0..<1_000_000_000
             #else
             let allowedRange = calendar.range(of: .nanosecond, in: .second, for: self)!
@@ -401,7 +405,7 @@ public extension Date {
             [.year, .month, .day, .hour, .minute, .second, .nanosecond],
             from: self)
         let min = components.minute!
-        components.minute? = min % 10 < 6 ? min - min % 10 : min + 10 - (min % 10)
+        components.minute? = min % 10 < 5 ? min - min % 10 : min + 10 - (min % 10)
         components.second = 0
         components.nanosecond = 0
         return calendar.date(from: components)!
@@ -529,7 +533,7 @@ public extension Date {
         }
     }
 
-    // swiftlint:disable cyclomatic_complexity function_body_length
+    // swiftlint:disable cyclomatic_complexity
     /// SwifterSwift: Date by changing value of calendar component.
     ///
     ///     let date = Date() // "Jan 12, 2017, 7:07 PM"
@@ -546,7 +550,8 @@ public extension Date {
         switch component {
         case .nanosecond:
             #if targetEnvironment(macCatalyst)
-            // The `Calendar` implementation in `macCatalyst` does not know that a nanosecond is 1/1,000,000,000th of a second
+            // The `Calendar` implementation in `macCatalyst` does not know that a nanosecond is 1/1,000,000,000th of a
+            // second
             let allowedRange = 0..<1_000_000_000
             #else
             let allowedRange = calendar.range(of: .nanosecond, in: .second, for: self)!
@@ -602,8 +607,9 @@ public extension Date {
         }
     }
 
+    // swiftlint:enable cyclomatic_complexity
+
     #if !os(Linux)
-    // swiftlint:enable cyclomatic_complexity, function_body_length
 
     /// SwifterSwift: Data at the beginning of calendar component.
     ///
@@ -649,7 +655,6 @@ public extension Date {
     }
     #endif
 
-    // swiftlint:disable function_body_length
     /// SwifterSwift: Date at the end of calendar component.
     ///
     ///     let date = Date() // "Jan 12, 2017, 7:27 PM"
@@ -713,8 +718,6 @@ public extension Date {
             return nil
         }
     }
-
-    // swiftlint:enable function_body_length
 
     /// SwifterSwift: Check if date is in current given calendar component.
     ///
@@ -894,7 +897,7 @@ public extension Date {
     /// - Returns: true if the date is within a number of components of another date.
     func isWithin(_ value: UInt, _ component: Calendar.Component, of date: Date) -> Bool {
         let components = calendar.dateComponents([component], from: self, to: date)
-        let componentValue = components.value(for: component)!
+        guard let componentValue = components.value(for: component) else { return false }
         return abs(componentValue) <= value
     }
 
@@ -920,7 +923,8 @@ public extension Date {
                     .timeIntervalSinceReferenceDate))
     }
 
-    /// SwifterSwift: Returns a random date within the specified range, using the given generator as a source for randomness.
+    /// SwifterSwift: Returns a random date within the specified range, using the given generator as a source for
+    /// randomness.
     ///
     /// - Parameters:
     ///   - range: The range in which to create a random date. `range` must not be empty.
@@ -933,7 +937,8 @@ public extension Date {
                 using: &generator))
     }
 
-    /// SwifterSwift: Returns a random date within the specified range, using the given generator as a source for randomness.
+    /// SwifterSwift: Returns a random date within the specified range, using the given generator as a source for
+    /// randomness.
     ///
     /// - Parameters:
     ///   - range: The range in which to create a random date.

@@ -21,8 +21,8 @@ SwifterSwift 是 **500 多个原生 Swift 扩展的集合**，为 iOS、macOS、
 
 ## 要求
 
-- **iOS** 10.0+ / **tvOS** 9.0+ / **watchOS** 2.0+ / **macOS** 10.10+ / **Ubuntu** 14.04+
-- Swift 5.0+
+- **iOS** 12.0+ / **tvOS** 12.0+ / **watchOS** 4.0+ / **macOS** 10.13+ / **Ubuntu** 14.04+
+- Swift 5.6+
 
 ## 希望将 SwifterSwift 用于旧版本的 Swift
 
@@ -84,7 +84,7 @@ let package = Package(
     name: "YOUR_PROJECT_NAME",
     targets: [],
     dependencies: [
-        .package(url: "https://github.com/SwifterSwift/SwifterSwift.git", from: "5.3.0")
+        .package(url: "https://github.com/SwifterSwift/SwifterSwift.git", from: "6.0.0")
     ]
 )
 </code></pre>
@@ -124,6 +124,8 @@ let package = Package(
 <li><a href="https://github.com/SwifterSwift/SwifterSwift/tree/master/Sources/SwifterSwift/SwiftStdlib/CharacterExtensions.swift"><code>Character extensions</code></a></li>
 <li><a href="https://github.com/SwifterSwift/SwifterSwift/tree/master/Sources/SwifterSwift/SwiftStdlib/CollectionExtensions.swift"><code>Collection extensions</code></a></li>
 <li><a href="https://github.com/SwifterSwift/SwifterSwift/tree/master/Sources/SwifterSwift/SwiftStdlib/ComparableExtensions.swift"><code>Comparable extensions</code></a></li>
+<li><a href="https://github.com/SwifterSwift/SwifterSwift/tree/master/Sources/SwifterSwift/SwiftStdlib/DecodableExtensions.swift"><code>DecodableExtensions extensions</code></a></li>
+<li><a href="https://github.com/SwifterSwift/SwifterSwift/tree/master/Sources/SwifterSwift/SwiftStdlib/DefaultStringInterpolationExtensions.swift"><code>DefaultStringInterpolationExtensions extensions</code></a></li>
 <li><a href="https://github.com/SwifterSwift/SwifterSwift/tree/master/Sources/SwifterSwift/SwiftStdlib/DictionaryExtensions.swift"><code>Dictionary extensions</code></a></li>
 <li><a href="https://github.com/SwifterSwift/SwifterSwift/tree/master/Sources/SwifterSwift/SwiftStdlib/DoubleExtensions.swift"><code>Double extensions</code></a></li>
 <li><a href="https://github.com/SwifterSwift/SwifterSwift/tree/master/Sources/SwifterSwift/SwiftStdlib/FloatExtensions.swift"><code>Float extensions</code></a></li>
@@ -152,6 +154,7 @@ let package = Package(
 <li><a href="https://github.com/SwifterSwift/SwifterSwift/tree/master/Sources/SwifterSwift/Foundation/NSPredicateExtensions.swift"><code>NSPredicate extensions</code></a></li>
 <li><a href="https://github.com/SwifterSwift/SwifterSwift/tree/master/Sources/SwifterSwift/Foundation/URLExtensions.swift"><code>URL extensions</code></a></li>
 <li><a href="https://github.com/SwifterSwift/SwifterSwift/tree/master/Sources/SwifterSwift/Foundation/URLRequestExtensions.swift"><code>URLRequest extensions</code></a></li>
+<li><a href="https://github.com/SwifterSwift/SwifterSwift/tree/master/Sources/SwifterSwift/Foundation/URLSessionExtensions.swift"><code>URLSession extensions</code></a></li>
 <li><a href="https://github.com/SwifterSwift/SwifterSwift/tree/master/Sources/SwifterSwift/Foundation/UserDefaultsExtensions.swift"><code>UserDefaults extensions</code></a></li>
 </ul>
 </details>
@@ -310,6 +313,14 @@ let package = Package(
 </ul>
 </details>
 
+<details>
+<summary>Combine 扩展</summary>
+</br>
+<ul>
+<li><a href="https://github.com/SwifterSwift/SwifterSwift/blob/master/Sources/SwifterSwift/Combine/FutureExtensions.swift"><code>Future extensions</code></a></li>
+</ul>
+</details>
+
 ## 这有多酷？
 
 SwifterSwift 是一个包含 **500 多个属性和方法**的库，旨在扩展 Swift 的功能和生产力，并忠实于原生的 Swift API 设计指南。
@@ -324,9 +335,9 @@ SwifterSwift 是一个包含 **500 多个属性和方法**的库，旨在扩展 
 
 我们希望得到您的反馈。参与前请参阅 [contributing guidelines](https://github.com/SwifterSwift/SwifterSwift/tree/master/CONTRIBUTING.md)。
 
-## Slack 频道: [![Slack](https://slackin-ppvrggbpgn.now.sh/badge.svg)](https://slackin-ppvrggbpgn.now.sh/)
+## Slack 频道: [![Slack](https://img.shields.io/badge/Slack-SwifterSwift-green.svg)](https://swifterswift.slack.com)
 
-使用 SwifterSwift 与其他人交谈并交流经验总是很愉快，所以[加入我们的 Slack 频道](https://slackin-ppvrggbpgn.now.sh/)吧。
+使用 SwifterSwift 与其他人交谈并交流经验总是很愉快，所以[加入我们的 Slack 频道](https://swifterswift.slack.com)吧。
 
 ## 鸣谢
 
