@@ -35,7 +35,7 @@ extension NSEdgeInsets: Equatable {
 // swiftlint:enable missing_swifterswift_prefix
 #endif
 
-#if os(iOS) || os(tvOS) || os(watchOS) || os(macOS)
+#if os(iOS) || os(tvOS) || os(watchOS) || os(macOS) || os(visionOS)
 
 // MARK: - Properties
 
